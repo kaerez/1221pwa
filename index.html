@@ -21,6 +21,18 @@
     console.log('Service worker has been registered for scope:'+ reg.scope);
   });
 }
+	
+	self.addEventListener('install', function(event) {
+  var offlinePage = new Request('offline.html');
+  event.waitUntil(
+    fetch(offlinePage).then(function(response) {
+      return caches.open('pwabuilder-offline').then(function(cache) {
+        console.log('[PWA Builder] Cached offline page during Install'+ response.url);
+        return cache.put(offlinePage, response);
+      });
+  }));
+});
+	
 </script>
 <head>
     <meta charset="utf-8" />
